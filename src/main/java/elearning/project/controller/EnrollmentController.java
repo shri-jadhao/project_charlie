@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import elearning.project.exceptions.NotEnrolledException;
 import elearning.project.models.Enrollment;
 import elearning.project.services.EnrollmentService;
 
@@ -15,29 +19,39 @@ import java.util.Optional;
 @RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
-    @Autowired
-    private EnrollmentService enrollmentService;
+	@Autowired
+	private EnrollmentService enrollmentService;
 
-    @PreAuthorize("hasRole('INSTRUCTOR')")
-    @GetMapping
-    public List<Enrollment> getAllEnrollments() {
-        return enrollmentService.getAllEnrollments();
-    }
+//	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@GetMapping
+	public List<Enrollment> getAllEnrollments() {
+		System.out.println("In the function");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_STUDENT"))) {
+			System.out.println("Hello bro you are student");
+			throw new NotEnrolledException("Unauthroized access ,only Instructor can access!");
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Enrollment> getEnrollmentById(@PathVariable Long id) {
-        Optional<Enrollment> enrollment = enrollmentService.getEnrollmentById(id);
-        return new ResponseEntity<>(enrollment.get(),HttpStatus.ACCEPTED);
-    }
-    @PreAuthorize("hasRole('STUDENT')")
-    @PostMapping 
-    public Enrollment createEnrollment(@RequestBody Enrollment enrollment) {
-        return enrollmentService.saveEnrollment(enrollment);
-    }
+		} else {
+			System.out.println("hello bro something isfishy");
+			return enrollmentService.getAllEnrollments();
+		}
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEnrollment(@PathVariable Long id) {
-        enrollmentService.deleteEnrollment(id);
-        return ResponseEntity.noContent().build();
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Enrollment> getEnrollmentById(@PathVariable Long id) {
+		Optional<Enrollment> enrollment = enrollmentService.getEnrollmentById(id);
+		return new ResponseEntity<>(enrollment.get(), HttpStatus.ACCEPTED);
+	}
+
+	@PreAuthorize("hasRole('STUDENT')")
+	@PostMapping
+	public Enrollment createEnrollment(@RequestBody Enrollment enrollment) {
+		return enrollmentService.saveEnrollment(enrollment);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteEnrollment(@PathVariable Long id) {
+		enrollmentService.deleteEnrollment(id);
+		return ResponseEntity.noContent().build();
+	}
 }

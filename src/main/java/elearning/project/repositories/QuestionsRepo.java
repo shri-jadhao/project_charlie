@@ -14,6 +14,6 @@ import elearning.project.models.quizmodel.Quizquestions;
 public interface QuestionsRepo extends JpaRepository<Quizquestions, Integer> {
 
 	List<Quizquestions> findByCategory(String catogery);  //-> intelligent JPA
-	@Query(value="select * from quizquestions q where q.category=:catogery order by rand() limit :questions",nativeQuery=true)
+	@Query(value="select * from quizquestions q where q.category=:catogery order by rand() limit questions",nativeQuery=true)
 	List<Quizquestions> findRandomQuestionsByCatogery(String catogery, int questions);
 }

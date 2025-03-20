@@ -3,6 +3,7 @@ package elearning.project.controller;
 import elearning.project.models.User;
 import elearning.project.securityservice.JWTService;
 import elearning.project.services.UserService;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,12 @@ public class UserController {
     @Autowired
     JWTService jwtservice;
 	@PostMapping("")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-		User createdUser = service.createUser(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+//		User createdUser = service.createUser(user);
+//		
+//		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+		System.out.println("Creating"+service.createUser(user));
+		return null;
 		// return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
 	}
 

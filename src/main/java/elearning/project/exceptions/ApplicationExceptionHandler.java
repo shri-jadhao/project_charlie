@@ -44,10 +44,17 @@ public class ApplicationExceptionHandler {
 		List<FieldError> listOfErrors = ex.getFieldErrors();
 		for (FieldError err : listOfErrors) {
 			
-			 sb.append("Error in Feild:"+err.getField()+"->"+err.getDefaultMessage()+'\n');
+			 sb.append(" Error in Feild: "+err.getField()+" -> "+err.getDefaultMessage());
 		}
 		ApiException api=new ApiException(sb.toString(),request.getRequestURI(),LocalDateTime.now());
 		return new ResponseEntity<>(api, HttpStatus.NOT_FOUND);
 
 	}
+	
+	@ExceptionHandler(UserExistsError.class)
+	public ResponseEntity<?> UserExistsError(UserExistsError ex,HttpServletRequest request){
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(),LocalDateTime.now());
+		return new ResponseEntity<>(api,HttpStatus.BAD_REQUEST);
+	}
+	
 }

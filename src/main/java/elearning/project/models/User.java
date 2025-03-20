@@ -12,9 +12,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,10 +30,12 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userID;
 
-	private String username;
-	@Enumerated(EnumType.STRING)
-	@NotEmpty
-	private Role role;
+    @NotEmpty(message = "Username must not be empty")
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
+    private String username;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 	@OneToMany(mappedBy = "instructor")
 	@JsonIgnore
@@ -43,7 +47,7 @@ public class User {
     
 //	^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$ 
 //	1.atleast one char,one didgit cap and small togeher 8 
-	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "Password must be at least 8 characters long and contain at least one letter and one digit")
+	@Size(min=8,message="Password must be atleast 8 characters")
 	private String password;
 
 	public enum Role {

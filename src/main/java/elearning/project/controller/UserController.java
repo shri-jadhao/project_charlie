@@ -23,12 +23,8 @@ public class UserController {
     JWTService jwtservice;
 	@PostMapping("")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-//		User createdUser = service.createUser(user);
-//		
-//		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-		System.out.println("Creating"+service.createUser(user));
-		return null;
-		// return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
+		User createdUser = service.createUser(user);
+		return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
 	}
 
 	@GetMapping("")

@@ -30,7 +30,7 @@ public class CourseController {
         return new ResponseEntity<>(course.get(),HttpStatus.ACCEPTED);
     }
     @PreAuthorize("hasRole('INSTRUCTOR')")
-    @PostMapping
+    @PostMapping("/{id}")
     public Course createCourse(@RequestBody Course course) {
         return courseService.saveCourse(course);
     }

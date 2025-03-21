@@ -31,7 +31,7 @@ public class QuizController {
 	}
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@GetMapping("")
-	public List<Quiz> getAllQuiz(){
+	public ResponseEntity<List<Quiz>> getAllQuiz(){
 		return service.getAllQuiz();
 	}
 	@GetMapping("{id}")

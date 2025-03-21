@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +23,20 @@ public class UserController {
 
 	@Autowired
 	private UserService service;
-    @Autowired
-    JWTService jwtservice;
+	@Autowired
+	JWTService jwtservice;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
 	@PostMapping("")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		User createdUser = service.createUser(user);
 
-		return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
+		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 
-		
-		//return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-		//System.out.println("Creating"+service.createUser(user));
-		//return null;
+		// return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+		// System.out.println("Creating"+service.createUser(user));
+		// return null;
 		// return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
 
 	}
@@ -40,6 +46,7 @@ public class UserController {
 		List<User> users = service.getAllUsers();
 		return ResponseEntity.ok(users);
 	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
 		User user = service.getUserById(id).get();
@@ -57,14 +64,19 @@ public class UserController {
 		service.deleteUser(id);
 		return ResponseEntity.noContent().build();
 	}
+
 //generates the JWT token through username
-	@GetMapping("/gettoken/{username}")
+	@PostMapping("/gettoken/{username}")
 	public String myhome(@PathVariable String username) {
-		System.out.println("In the token generation");
+		System.out.println("donr!!!");
+		if (service.findByUserName(username) == null) {
+			throw new UsernameNotFoundException("User is not available");
+		}
 		return jwtservice.generateToken(username);
 	}
+
 //	
-	@GetMapping("get/{username}")
+	@GetMapping("{username}")
 	public User getusername(@PathVariable String username) {
 		return service.getusername(username);
 	}

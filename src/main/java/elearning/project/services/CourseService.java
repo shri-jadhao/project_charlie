@@ -10,5 +10,6 @@ public interface CourseService {
     List<Course> getAllCourses();
     Optional<Course> getCourseById(Long id);
     Course saveCourse(Course course) throws ResourceIdNotFoundException;
+    Course updateCourse(Long id, Course course) throws ResourceIdNotFoundException;
     void deleteCourse(Long id);
 }

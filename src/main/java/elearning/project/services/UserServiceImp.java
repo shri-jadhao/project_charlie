@@ -64,7 +64,6 @@ public class UserServiceImp implements UserService {
 		Optional<User> optionaluser = getUserById(id);
 		// Exception must be handled
 		User user = optionaluser.get();
-		System.out.println("User is waste guy" + user);
 		user.setUsername(userDetails.getUsername());
 		user.setEmail(userDetails.getEmail());
 		user.setRole(userDetails.getRole());

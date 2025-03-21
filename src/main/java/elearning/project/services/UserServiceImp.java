@@ -2,7 +2,6 @@ package elearning.project.services;
 
 import elearning.project.models.User;
 import elearning.project.repositories.UserRepo;
-//import elearning.project.securityservice.JWTService;
 import elearning.project.securityservice.JWTService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,64 +19,75 @@ import java.util.Optional;
 @Service
 public class UserServiceImp implements UserService {
 
-	@Autowired
-	private UserRepo userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
 
-	@Autowired
+    @Autowired
+    private UserRepo userRepository;
 
-	JWTService service;
-	@Autowired
-	AuthenticationManager authenticationManager;
-//    
-	public String authentication(User user) {
-		System.out.println("Hello bro i am in authentication");
-		Authentication a = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-		if (a.isAuthenticated()) {
+    @Autowired
+    private JWTService service;
 
-			return service.generateToken(user.getUsername());
-		}
-		return "failure";
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	}
-//    //its the encoder which converts the entered password to an encoded text
-	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-	public List<User> getAllUsers() {
-		System.out.println("hello in all user");
-		return userRepository.findAll();
-	}
+    public String authentication(User user) {
+        logger.info("Authenticating user: {}", user.getUsername());
+        Authentication a = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        if (a.isAuthenticated()) {
+            logger.info("Authentication successful for user: {}", user.getUsername());
+            return service.generateToken(user.getUsername());
+        }
+        logger.warn("Authentication failed for user: {}", user.getUsername());
+        return "failure";
+    }
 
-	public Optional<User> getUserById(Long id) {
-		return userRepository.findById(id);
-	}
+    public List<User> getAllUsers() {
+        logger.info("Fetching all users");
+        return userRepository.findAll();
+    }
 
-	public User createUser(User user) {
-		//encoding process here
-		user.setPassword(encoder.encode(user.getPassword()));
-		return userRepository.save(user);
-	}
+    public Optional<User> getUserById(Long id) {
+        logger.info("Fetching user with ID: {}", id);
+        return userRepository.findById(id);
+    }
 
-	public User updateUser(Long id, User userDetails) {
-		Optional<User> optionaluser = getUserById(id);
-		// Exception must be handled
-		User user = optionaluser.get();
-		System.out.println("User is waste guy" + user);
-		user.setUsername(userDetails.getUsername());
-		user.setEmail(userDetails.getEmail());
-		user.setRole(userDetails.getRole());
-		return userRepository.save(user);
-	}
+    public User createUser(User user) {
+        logger.info("Creating user with username: {}", user.getUsername());
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
-	public void deleteUser(Long id) {
-		User user = getUserById(id).get();
-		userRepository.delete(user);
-	}
+    public User updateUser(Long id, User userDetails) {
+        logger.info("Updating user with ID: {}", id);
+        Optional<User> optionalUser = getUserById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(userDetails.getUsername());
+            user.setEmail(userDetails.getEmail());
+            user.setRole(userDetails.getRole());
+            return userRepository.save(user);
+        } else {
+            logger.error("User with ID: {} not found", id);
+            return null;
+        }
+    }
 
-	@Override
-	public User getusername(String username) {
-		System.out.println("I am in the worst situation:)");
-		return userRepository.findUserByUsername(username);
-	}
+    public void deleteUser(Long id) {
+        logger.info("Deleting user with ID: {}", id);
+        Optional<User> optionalUser = getUserById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.delete(optionalUser.get());
+        } else {
+            logger.error("User with ID: {} not found", id);
+        }
+    }
 
+    @Override
+    public User getusername(String username) {
+        logger.info("Fetching user by username: {}", username);
+        return userRepository.findUserByUsername(username);
+    }
 }

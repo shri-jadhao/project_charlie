@@ -93,4 +93,10 @@ public class UserServiceImp implements UserService {
         return userRepository.findUserByUsername(username);
     }
 
+	@Override
+	public User findByUserName(String username) {
+		  System.out.println("Done!");
+		  return userRepository.findUserByUsername(username);
+	}
+
 }

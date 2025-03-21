@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import elearning.project.exceptions.CourseIdNotFoundException;
 import elearning.project.exceptions.ResourceIdNotFoundException;
 import elearning.project.models.Course;
 import elearning.project.repositories.CourseRepo;
@@ -28,10 +29,13 @@ public class CourseServiceImp implements CourseService {
         logger.info("Fetching all courses");
         return courseRepository.findAll();
     }
-
+    
     @Override
     public Optional<Course> getCourseById(Long id) {
         logger.info("Fetching course with ID: {}", id);
+        if(courseRepository.findById(id).isEmpty()) {
+        	throw new CourseIdNotFoundException("Course Id Not Found");
+        }
         return courseRepository.findById(id);
     }
 
@@ -46,6 +50,7 @@ public class CourseServiceImp implements CourseService {
         }
         return courseRepository.save(course);
     }
+    
 
     @Override
     public void deleteCourse(Long id) {
@@ -63,7 +68,10 @@ public class CourseServiceImp implements CourseService {
         updatedCourse.setTitle(course.getTitle());
         updatedCourse.setDescription(course.getDescription());
         updatedCourse.setInstructor(course.getInstructor());
-        // Update other fields as necessary
         return courseRepository.save(updatedCourse);
     }
 }
+
+
+
+

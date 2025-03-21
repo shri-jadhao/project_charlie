@@ -23,27 +23,47 @@ public class CourseServiceImp implements CourseService {
     @Autowired
     private UserRepo userRepository;
 
+    @Override
     public List<Course> getAllCourses() {
         logger.info("Fetching all courses");
         return courseRepository.findAll();
     }
 
+    @Override
     public Optional<Course> getCourseById(Long id) {
         logger.info("Fetching course with ID: {}", id);
         return courseRepository.findById(id);
     }
 
+    @Override
     public Course saveCourse(Course course) {
+
         logger.info("Saving course with instructor ID: {}", course.getInstructor().getUserID());
         if (userRepository.findById(course.getInstructor().getUserID()).isEmpty()) {
             logger.error("Instructor with ID: {} not found", course.getInstructor().getUserID());
+
             throw new ResourceIdNotFoundException("Sorry the user/instructor not found!");
         }
         return courseRepository.save(course);
     }
 
+    @Override
     public void deleteCourse(Long id) {
         logger.info("Deleting course with ID: {}", id);
         courseRepository.deleteById(id);
+    }
+
+    @Override
+    public Course updateCourse(Long id, Course course) throws ResourceIdNotFoundException {
+        Optional<Course> existingCourse = courseRepository.findById(id);
+        if (existingCourse.isEmpty()) {
+            throw new ResourceIdNotFoundException("Course not found with id: " + id);
+        }
+        Course updatedCourse = existingCourse.get();
+        updatedCourse.setTitle(course.getTitle());
+        updatedCourse.setDescription(course.getDescription());
+        updatedCourse.setInstructor(course.getInstructor());
+        // Update other fields as necessary
+        return courseRepository.save(updatedCourse);
     }
 }

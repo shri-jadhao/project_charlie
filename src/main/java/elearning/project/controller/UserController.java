@@ -24,11 +24,15 @@ public class UserController {
 	@PostMapping("")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		User createdUser = service.createUser(user);
+
+		return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
+
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+		//return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 		//System.out.println("Creating"+service.createUser(user));
 		//return null;
 		// return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
+
 	}
 
 	@GetMapping("")

@@ -1,5 +1,6 @@
 package elearning.project.services;
 
+import elearning.project.exceptions.UserExistsError;
 import elearning.project.models.User;
 import elearning.project.repositories.UserRepo;
 import elearning.project.securityservice.JWTService;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
+
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
 
@@ -90,4 +92,5 @@ public class UserServiceImp implements UserService {
         logger.info("Fetching user by username: {}", username);
         return userRepository.findUserByUsername(username);
     }
+
 }

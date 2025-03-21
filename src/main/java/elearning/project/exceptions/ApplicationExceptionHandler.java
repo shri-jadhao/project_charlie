@@ -43,3 +43,4 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
     }
 }
+

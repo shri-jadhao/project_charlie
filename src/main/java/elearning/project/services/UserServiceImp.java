@@ -1,6 +1,6 @@
 package elearning.project.services;
 
-import elearning.project.exceptions.UserExistsError;
+import elearning.project.exceptions.UserAlreadyExists;
 import elearning.project.models.User;
 import elearning.project.repositories.UserRepo;
 import elearning.project.securityservice.JWTService;
@@ -57,6 +57,12 @@ public class UserServiceImp implements UserService {
     }
 
     public User createUser(User user) {
+    	if(userRepository.findUserByEmail(user.getEmail())!=null) {
+    		throw new UserAlreadyExists("User with this email already exists!");
+    	}
+    	else if(userRepository.findUserByUsername(user.getUsername())!=null) {
+    		throw new UserAlreadyExists("Username already exists!,Try Diiferent Username");
+    	}
         logger.info("Creating user with username: {}", user.getUsername());
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);

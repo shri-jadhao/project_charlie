@@ -1,3 +1,4 @@
+
 package elearning.project.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class SecurityConfig {
 	            .authorizeHttpRequests(auth -> auth
 //	                sd.requestMatchers("/api/assessments").hasRole("STUDENT")  //role based api access
 
-	                .requestMatchers("/api/user","/api/user/gettoken/**","/api/quiz/**","api/user/**").permitAll() // Allows access to register and login endpoints
+	                .requestMatchers("/api/user","/api/user/gettoken/**","/api/quiz").permitAll() // Allows access to register and login endpoints
 
 //	                .requestMatchers("/api/user/gettoken").permitAll()
 	                .anyRequest().authenticated()

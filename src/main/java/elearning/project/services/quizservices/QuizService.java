@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import elearning.project.exceptions.NotEnrolledException;
+import elearning.project.exceptions.QuizException;
 import elearning.project.exceptions.QuizIdNotFoundException;
 import elearning.project.models.Assessment;
 import elearning.project.models.Course;
@@ -40,6 +41,15 @@ public class QuizService {
 
 	public ResponseEntity<String> createQuiz(String catogery, int questions, String title, Long id) {
 		System.out.println("In the creation of quiz");
+		if(questionsdao.findByCategory(catogery).isEmpty()) {
+			throw new QuizException("Given catogery not found!");
+		}
+		else {
+		    int count =questionsdao.findNumberOfQuestionsByCategory(catogery);
+		    if(questions>count) {
+		    	throw new QuizException("Number questions is too large to create quiz!");
+		    }
+		}
 		List<Quizquestions> Q = questionsdao.findRandomQuestionsByCatogery(catogery, questions);
 		Quiz quiz = new Quiz();
 		quiz.setQuestions(Q);

@@ -9,5 +9,6 @@ import elearning.project.models.User;
 public interface UserRepo extends JpaRepository<User, Long>{
 //	@Query(value="select * from user where username=:username",nativeQuery=true)
 	public User findUserByUsername(String username);
+	public User findUserByEmail(String email);
 	 
 }

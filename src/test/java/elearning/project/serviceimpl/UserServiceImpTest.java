@@ -1,5 +1,4 @@
 package elearning.project.serviceimpl;
-
 import elearning.project.exceptions.UserExistsError;
 import elearning.project.models.User;
 import elearning.project.repositories.UserRepo;

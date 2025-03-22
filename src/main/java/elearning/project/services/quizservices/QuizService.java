@@ -49,8 +49,8 @@ public class QuizService {
 		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 
-	public List<Quiz> getAllQuiz() {
-		return quizrepo.findAll();
+	public ResponseEntity<List<Quiz>> getAllQuiz() {
+		return new ResponseEntity<>(quizrepo.findAll(),HttpStatus.OK);
 	}
 
 	public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Long id) {

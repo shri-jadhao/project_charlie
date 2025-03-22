@@ -35,7 +35,13 @@ public class SecurityConfig {
 	            .csrf(csrf -> csrf.disable()) // Disables CSRF protection
 	            .authorizeHttpRequests(auth -> auth
 //	                sd.requestMatchers("/api/assessments").hasRole("STUDENT")  //role based api access
+<<<<<<< HEAD
 	                .requestMatchers("/api/user","/api/user/gettoken/**","/api/quiz/**","/api/user/**").permitAll() // Allows access to register and login endpoints
+=======
+
+	                .requestMatchers("/api/user","/api/user/gettoken/**","/api/quiz/**","api/user/**").permitAll() // Allows access to register and login endpoints
+
+>>>>>>> aec97648dfbccb43c859679465efa38f77017d07
 //	                .requestMatchers("/api/user/gettoken").permitAll()
 	                .anyRequest().authenticated()
 	            )

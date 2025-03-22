@@ -11,7 +11,7 @@ The purpose of this document is to provide a detailed **Low-Level Design (LLD)**
 
 It uses:
 - 🔗 **REST API-based backend architecture**
-- 🎨 **Angular or React for the frontend**
+- 🎨 **A React for the frontend**
 This design supports both **Java (Spring Boot)** and **.NET (ASP.NET Core)** frameworks.
 
 ---

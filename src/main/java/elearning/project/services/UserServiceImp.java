@@ -1,14 +1,11 @@
 package elearning.project.services;
 
-<<<<<<< HEAD
-import java.util.List;
-import java.util.Optional;
-=======
 import elearning.project.exceptions.UserExistsError;
 import elearning.project.models.User;
 import elearning.project.repositories.UserRepo;
 import elearning.project.securityservice.JWTService;
->>>>>>> aec97648dfbccb43c859679465efa38f77017d07
+import elearning.project.email.EmailServiceImpl;
+import elearning.project.exceptions.UserNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,41 +16,16 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import elearning.project.email.EmailServiceImpl;
-import elearning.project.exceptions.UserNotFoundException;
-import elearning.project.models.User;
-import elearning.project.repositories.UserRepo;
-import elearning.project.securityservice.JWTService;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
 
-<<<<<<< HEAD
-	@Autowired
-	private UserRepo userRepository;
-	
-	@Autowired
-	private EmailServiceImpl emailserviceimpl;
-=======
->>>>>>> aec97648dfbccb43c859679465efa38f77017d07
-
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
 
-<<<<<<< HEAD
-	JWTService service;
-	@Autowired
-	AuthenticationManager authenticationManager;
-//    
-        @Override
-	public String authentication(User user) {
-		System.out.println("Hello bro i am in authentication");
-		Authentication a = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-		if (a.isAuthenticated()) {
-=======
     @Autowired
     private UserRepo userRepository;
->>>>>>> aec97648dfbccb43c859679465efa38f77017d07
 
     @Autowired
     private JWTService service;
@@ -61,8 +33,12 @@ public class UserServiceImp implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private EmailServiceImpl emailserviceimpl;
+
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
+    @Override
     public String authentication(User user) {
         logger.info("Authenticating user: {}", user.getUsername());
         Authentication a = authenticationManager
@@ -75,46 +51,28 @@ public class UserServiceImp implements UserService {
         return "failure";
     }
 
-<<<<<<< HEAD
-	public User createUser(User user) {
-		//encoding process here
-		user.setPassword(encoder.encode(user.getPassword()));
-		User save =  userRepository.save(user);
-		emailserviceimpl.sendMailWithAttachment(save);
-		return save;
-	}
-
-	public User updateUser(Long id, User userDetails) {
-		Optional<User> optionalUser = getUserById(id);
-		// Exception must be handled
-		if (optionalUser.isEmpty()) {
-			throw new UserNotFoundException("User with ID " + id + " not found.");
-		}
-		User user = optionalUser.get();
-		System.out.println("User is waste guy" + user);
-		user.setUsername(userDetails.getUsername());
-		user.setEmail(userDetails.getEmail());
-		user.setRole(userDetails.getRole());
-		return userRepository.save(user);
-	}
-=======
+    @Override
     public List<User> getAllUsers() {
         logger.info("Fetching all users");
         return userRepository.findAll();
     }
 
+    @Override
     public Optional<User> getUserById(Long id) {
         logger.info("Fetching user with ID: {}", id);
         return userRepository.findById(id);
     }
->>>>>>> aec97648dfbccb43c859679465efa38f77017d07
 
+    @Override
     public User createUser(User user) {
         logger.info("Creating user with username: {}", user.getUsername());
         user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        emailserviceimpl.sendMailWithAttachment(savedUser);
+        return savedUser;
     }
 
+    @Override
     public User updateUser(Long id, User userDetails) {
         logger.info("Updating user with ID: {}", id);
         Optional<User> optionalUser = getUserById(id);
@@ -126,10 +84,11 @@ public class UserServiceImp implements UserService {
             return userRepository.save(user);
         } else {
             logger.error("User with ID: {} not found", id);
-            return null;
+            throw new UserNotFoundException("User with ID " + id + " not found.");
         }
     }
 
+    @Override
     public void deleteUser(Long id) {
         logger.info("Deleting user with ID: {}", id);
         Optional<User> optionalUser = getUserById(id);
@@ -137,6 +96,7 @@ public class UserServiceImp implements UserService {
             userRepository.delete(optionalUser.get());
         } else {
             logger.error("User with ID: {} not found", id);
+            throw new UserNotFoundException("User with ID " + id + " not found.");
         }
     }
 
@@ -146,10 +106,9 @@ public class UserServiceImp implements UserService {
         return userRepository.findUserByUsername(username);
     }
 
-	@Override
-	public User findByUserName(String username) {
-		  System.out.println("Done!");
-		  return userRepository.findUserByUsername(username);
-	}
-
+    @Override
+    public User findByUserName(String username) {
+        logger.info("Fetching user by username: {}", username);
+        return userRepository.findUserByUsername(username);
+    }
 }

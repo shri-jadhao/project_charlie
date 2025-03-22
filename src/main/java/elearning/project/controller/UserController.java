@@ -56,7 +56,7 @@ public class UserController {
 		return jwtservice.generateToken(username);
 	}
 //	
-	@GetMapping("get/{username}")
+	@GetMapping("name/{username}")
 	public User getusername(@PathVariable String username) {
 		return service.getusername(username);
 	}

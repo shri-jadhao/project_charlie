@@ -29,6 +29,7 @@ public class CourseController {
         Optional<Course> course = courseService.getCourseById(id);
         return new ResponseEntity<>(course.get(),HttpStatus.ACCEPTED);
     }
+    // Only INSTRUCTOR role can access this
     @PreAuthorize("hasRole('INSTRUCTOR')")
     @PostMapping("/{id}")
     public Course createCourse(@RequestBody Course course) {

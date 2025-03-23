@@ -28,13 +28,15 @@ public class Course {
     private String contentURL;
     
     @ManyToOne
+    //prevents infinite recursion during JSON serialization
     @JsonIgnoreProperties("course")
     User instructor; 
     
     @OneToMany(mappedBy="course")
     @JsonIgnoreProperties(value="course")
     List<Enrollment> enrollments;
-    
+
+    // all operations on course will be cascaded to Video entity
     @OneToMany(mappedBy="course",cascade = CascadeType.ALL)
     @JsonIgnoreProperties("course")
     List<Video> video;

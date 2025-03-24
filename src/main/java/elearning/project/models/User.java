@@ -31,7 +31,7 @@ public class User {
 	private Long userID;
 
     @NotEmpty(message = "Username must not be empty")
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 50 characters")
     private String username;
 
     @Enumerated(EnumType.STRING)
@@ -41,14 +41,12 @@ public class User {
 	@OneToMany(mappedBy = "instructor")
 	@JsonIgnore
 	List<Course> course;
-	@Email(message="Email must not be null")
+	@Email(message="Once Recheck the Email")
+	@NotEmpty(message="Email must not be empty")
 	private String email;
     
-//	^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$ 
-//	1.atleast one char,one didgit cap and small togeher 8 
-
+	
 	@Size(min = 8,  message = "Password must be at least 8 characters long and contain at least one letter and one digit")
-
 	private String password;
 
 	public enum Role {

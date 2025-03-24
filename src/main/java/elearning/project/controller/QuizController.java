@@ -25,13 +25,14 @@ public class QuizController {
 	@Autowired
 	QuizService service;
 	
-	@PostMapping("")
-	public ResponseEntity<String> postTheQuestions(@RequestParam String catogery,@RequestParam int questions,@RequestParam String title,@RequestParam Long assessmentId){
-		return service.createQuiz(catogery,questions,title,assessmentId);
+	@PostMapping
+	public ResponseEntity<String> postTheQuestions(@RequestParam String catogery,@RequestParam int questions,@RequestParam String title,@RequestParam Long assessmentid){
+		System.out.println("Api called!");
+		return service.createQuiz(catogery,questions,title,assessmentid);
 	}
-	@PreAuthorize("hasRole('INSTRUCTOR')")
-	@GetMapping("")
-	public List<Quiz> getAllQuiz(){
+//	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@GetMapping
+	public ResponseEntity<List<Quiz>> getAllQuiz(){
 		return service.getAllQuiz();
 	}
 	@GetMapping("{id}")
@@ -45,3 +46,5 @@ public class QuizController {
 	}
 
 }
+
+

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import elearning.project.exceptiondto.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
@@ -42,8 +43,7 @@ public class ApplicationExceptionHandler {
 		StringBuilder sb = new StringBuilder();
 		List<FieldError> listOfErrors = ex.getFieldErrors();
 		for (FieldError err : listOfErrors) {
-			sb.append("Error in Field: ").append(err.getField()).append(" -> ").append(err.getDefaultMessage())
-					.append('\n');
+			sb.append("Error in Field: ").append(err.getField()).append(" -> ").append(err.getDefaultMessage()).append(" ------- ");
 		}
 		ApiException api = new ApiException(sb.toString(), request.getRequestURI(), LocalDateTime.now());
 		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
@@ -77,5 +77,11 @@ public class ApplicationExceptionHandler {
 		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
 		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}
-
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<?> handlerUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+	
 }

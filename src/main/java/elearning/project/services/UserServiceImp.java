@@ -97,12 +97,14 @@ public class UserServiceImp implements UserService {
 	@Override
 	public void deleteUser(Long id) {
 		logger.info("Deleting user with ID: {}", id);
-		Optional<User> optionalUser = getUserById(id);
-		if (optionalUser.isPresent()) {
-			userRepository.delete(optionalUser.get());
-		} else {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (optionalUser.isEmpty()) {
+			System.out.println("hello i deletion");
 			logger.error("User with ID: {} not found", id);
 			throw new UserNotFoundException("User with ID " + id + " not found.");
+
+		} else {
+			userRepository.delete(optionalUser.get());
 		}
 	}
 
@@ -111,7 +113,7 @@ public class UserServiceImp implements UserService {
 		logger.info("Fetching user by username: {}", username);
 		return userRepository.findUserByUsername(username);
 	}
-	
+
 	@Override
 	public User findByUserName(String username) {
 		logger.info("Fetching user by username: {}", username);

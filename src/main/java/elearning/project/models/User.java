@@ -41,8 +41,6 @@ public class User {
 	@OneToMany(mappedBy = "instructor")
 	@JsonIgnore
 	List<Course> course;
-
-	@Column(unique = true)
 	@Email(message="Email must not be null")
 	private String email;
     

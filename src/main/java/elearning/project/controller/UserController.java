@@ -7,7 +7,7 @@ import elearning.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class UserController {
 	}
 //generates the JWT token through username
 	@GetMapping("/gettoken/{username}")
-	public String myhome(@PathVariable String username) {
+	public String getToken(@PathVariable String username) {
 		System.out.println("In the token generation");
 		return jwtservice.generateToken(username);
 	}

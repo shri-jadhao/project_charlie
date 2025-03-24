@@ -2,6 +2,8 @@ package elearning.project.exceptions;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,9 +54,26 @@ public class ApplicationExceptionHandler {
 		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
 		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(CourseIdNotFoundException.class)
 	public ResponseEntity<?> CourseIdNotFound(CourseIdNotFoundException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserAlreadyExists.class)
+	public ResponseEntity<?> UserAlreadyExists(UserAlreadyExists ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(QuizException.class)
+	public ResponseEntity<?> QuizException(QuizException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<?> handlerNoSuchElementException(NoSuchElementException ex, HttpServletRequest request) {
 		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
 		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}

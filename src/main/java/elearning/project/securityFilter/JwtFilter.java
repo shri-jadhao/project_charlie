@@ -35,13 +35,15 @@ public class JwtFilter extends OncePerRequestFilter {
 		String token = null;
 		String username = null;
         //seperating the Bearer from the JWT token
+		// already we are authenticated : we have token
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 		
 			token = authHeader.substring(7);
 			System.out.println(token);
 			username = jwtService.extractUserName(token);
 		}
-
+      
+		
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(username);
 			if (jwtService.validateToken(token, userDetails)) {

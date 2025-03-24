@@ -74,7 +74,7 @@ public class UserServiceImp implements UserService {
 		logger.info("Creating user with username: {}", user.getUsername());
 		user.setPassword(encoder.encode(user.getPassword()));
 		User savedUser = userRepository.save(user);
-		emailserviceimpl.sendMailWithAttachment(savedUser);
+		//emailserviceimpl.sendMailWithAttachment(savedUser);
 		return savedUser;
 	}
 

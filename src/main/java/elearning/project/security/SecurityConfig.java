@@ -1,5 +1,5 @@
-
 package elearning.project.security;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +32,13 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    System.out.println("hello bro !!! in config file");
 	    return http
-	            .csrf(csrf -> csrf.disable()) // Disables CSRF protection
+	            .csrf(csrf -> csrf.disable()) // Disables CSRF protectionno
 	            .authorizeHttpRequests(auth -> auth
 //	                sd.requestMatchers("/api/assessments").hasRole("STUDENT")  //role based api access
-	                .requestMatchers("/api/user","/api/user/gettoken/**","/api/quiz").permitAll() // Allows access to register and login endpoints
+
+
+	                .requestMatchers("/api/user","/api/user/gettoken/**","/api/quiz/**","api/user/**").permitAll() // Allows access to register and login endpoints
+
 
 //	                .requestMatchers("/api/user/gettoken").permitAll()
 	                .anyRequest().authenticated()

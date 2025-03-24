@@ -1,53 +1,87 @@
 package elearning.project.exceptions;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import elearning.project.exceptiondto.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
-	@ExceptionHandler(exception=ResourceIdNotFoundException.class)
-	public ResponseEntity<?> resourseIdNotFoundException(ResourceIdNotFoundException ex,HttpServletRequest request){
-		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(),LocalDateTime.now());
-		return new ResponseEntity<>(api,HttpStatus.NOT_FOUND);
-	}
-	
-	@ExceptionHandler(exception=NotEnrolledException.class)
-	public ResponseEntity<?> NotEnrolledException(NotEnrolledException ex,HttpServletRequest request){
-		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(),LocalDateTime.now());
-		return new ResponseEntity<>(api,HttpStatus.BAD_REQUEST);
+
+	@ExceptionHandler(ResourceIdNotFoundException.class)
+	public ResponseEntity<?> resourceIdNotFoundException(ResourceIdNotFoundException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(exception=RoleBasedAccessControlException.class)
-	public ResponseEntity<?> RoleBasedAccessControlException(RoleBasedAccessControlException ex,HttpServletRequest request){
-		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(),LocalDateTime.now());
-		return new ResponseEntity<>(api,HttpStatus.BAD_REQUEST);
+	@ExceptionHandler(NotEnrolledException.class)
+	public ResponseEntity<?> notEnrolledException(NotEnrolledException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}
-	
-	//Method ArgumentNotValidException class is a predefined exception class which has 
-	@ExceptionHandler(exception = MethodArgumentNotValidException.class)
-	public ResponseEntity<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex,
+
+	@ExceptionHandler(RoleBasedAccessControlException.class)
+	public ResponseEntity<?> roleBasedAccessControlException(RoleBasedAccessControlException ex,
 			HttpServletRequest request) {
-		// This is the method going to handle the restaurentIdnotfoundexception
-		StringBuilder sb=new StringBuilder();
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
+			HttpServletRequest request) {
+		StringBuilder sb = new StringBuilder();
 		List<FieldError> listOfErrors = ex.getFieldErrors();
 		for (FieldError err : listOfErrors) {
-			
-			 sb.append("Error in Feild:"+err.getField()+"->"+err.getDefaultMessage()+'\n');
+			sb.append("Error in Field: ").append(err.getField()).append(" -> ").append(err.getDefaultMessage()).append(" ------- ");
 		}
-		ApiException api=new ApiException(sb.toString(),request.getRequestURI(),LocalDateTime.now());
-		return new ResponseEntity<>(api, HttpStatus.NOT_FOUND);
-
+		ApiException api = new ApiException(sb.toString(), request.getRequestURI(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<?> UserNotFoundException(UsernameNotFoundException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(CourseIdNotFoundException.class)
+	public ResponseEntity<?> CourseIdNotFound(CourseIdNotFoundException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserAlreadyExists.class)
+	public ResponseEntity<?> UserAlreadyExists(UserAlreadyExists ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(QuizException.class)
+	public ResponseEntity<?> QuizException(QuizException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<?> handlerNoSuchElementException(NoSuchElementException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<?> handlerUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+	
 }

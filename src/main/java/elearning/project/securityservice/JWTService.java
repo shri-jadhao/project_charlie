@@ -10,9 +10,13 @@ import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import elearning.project.repositories.UserRepo;
+import elearning.project.services.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -24,7 +28,9 @@ import lombok.Value;
 @Service
 public class JWTService {
 	private String secretKey;
-
+	
+	@Autowired
+	UserRepo userRepo;
 //	private long jwtExpiryTime = 86400000;
 
 	public JWTService() {
@@ -40,11 +46,14 @@ public class JWTService {
 	}
 
 	private Map<String, Object> claims = new HashMap<>();
-
 	// Generate a JWT token for the given username
 	public String generateToken(String username) {
+		if(userRepo.findUserByUsername(username)==null) {
+			throw new UsernameNotFoundException(username+" is not in DB to generate token!");
+		}
 		return Jwts.builder().claims().add(claims).subject(username).issuedAt(new Date(System.currentTimeMillis()))
 		.expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000 )).and().signWith(getKey()).compact();
+				//.expiration(new Date(new Date().getTime()+ 24 * 60 * 60 * 1000 )).and().signWith(getKey()).compact();
 	}
 
 //  Get the secret key for signing the JWT

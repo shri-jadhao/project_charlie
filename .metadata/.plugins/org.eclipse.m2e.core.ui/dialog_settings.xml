@@ -2,7 +2,11 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+<<<<<<< HEAD
 			<item value="C:\Users\2389566\OneDrive - Cognizant\Documents\project_2\project_charlie"/>
+=======
+			<item value="C:\Users\2389616\OneDrive - Cognizant\Documents\project_charlie"/>
+>>>>>>> bf6823668ec1a6a004d880b21dc2c4b41a0ca1a0
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

@@ -30,7 +30,6 @@ public class UserController {
 		return null;
 		// return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
 	}
-
 	@GetMapping("")
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> users = service.getAllUsers();

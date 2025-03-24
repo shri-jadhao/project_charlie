@@ -30,7 +30,7 @@ public class User {
 
 	private String username;
 	@Enumerated(EnumType.STRING)
-	@NotEmpty
+	//@NotEmpty
 	private Role role;
 
 	@OneToMany(mappedBy = "instructor")

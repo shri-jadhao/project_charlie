@@ -122,19 +122,19 @@ public class UserServiceImpTest {
         assertEquals(user, result);
     }
 
-    @Test
-    public void testAuthentication() {
-        User user = new User();
-        user.setUsername("username");
-        user.setPassword("password");
-
-        Authentication authentication = mock(Authentication.class);
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(jwtService.generateToken(anyString())).thenReturn("token");
-
-        String result = userService.authentication(user);
-
-        assertEquals("token", result);
-    }
+//    @Test
+//    public void testAuthentication() {
+//        User user = new User();
+//        user.setUsername("username");
+//        user.setPassword("password");
+//
+//        Authentication authentication = mock(Authentication.class);
+//        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
+//        when(authentication.isAuthenticated()).thenReturn(true);
+//        when(jwtService.generateToken(anyString())).thenReturn("token");
+//
+//        String result = userService.authentication(user);
+//
+//        assertEquals("token", result);
+//    }
 }

@@ -37,7 +37,7 @@ public class ApplicationExceptionHandler {
 		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(MethodArgumentNotValidException.class)   //its thrown by the @Valid annotation
 	public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
 			HttpServletRequest request) {
 		StringBuilder sb = new StringBuilder();

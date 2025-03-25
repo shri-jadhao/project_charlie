@@ -38,6 +38,7 @@ public class QuestionsController {
 		for(Quizquestions q:question ) {
 			   service.uploadquestions(q);
 		}
+
 		
 	}
 	@GetMapping("/{catogery}")

@@ -39,18 +39,18 @@ public class UserServiceImp implements UserService {
 
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-	@Override
-	public String authentication(User user) {
-		logger.info("Authenticating user: {}", user.getUsername());
-		Authentication a = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-		if (a.isAuthenticated()) {
-			logger.info("Authentication successful for user: {}", user.getUsername());
-			return service.generateToken(user.getUsername());
-		}
-		logger.warn("Authentication failed for user: {}", user.getUsername());
-		return "failure";
-	}
+//	@Override
+//	public String authentication(User user) {
+//		logger.info("Authenticating user: {}", user.getUsername());
+//		Authentication a = authenticationManager
+//				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+//		if (a.isAuthenticated()) {
+//			logger.info("Authentication successful for user: {}", user.getUsername());
+//			return service.generateToken(user.getUsername());
+//		}
+//		logger.warn("Authentication failed for user: {}", user.getUsername());
+//		return "failure";
+//	}
 
 	@Override
 	public List<User> getAllUsers() {

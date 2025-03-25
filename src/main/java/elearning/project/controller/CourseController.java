@@ -31,7 +31,7 @@ public class CourseController {
     }
     // Only INSTRUCTOR role can access this
     @PreAuthorize("hasRole('INSTRUCTOR')")
-    @PostMapping("/{id}")
+    @PostMapping("")
     public Course createCourse(@RequestBody Course course) {
         return courseService.saveCourse(course);
     }

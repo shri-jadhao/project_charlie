@@ -92,7 +92,7 @@ public class UserControllerTest {
         String token = "token";
         when(jwtService.generateToken(anyString())).thenReturn(token);
 
-        String response = userController.myhome("username");
+        String response = userController.getToken("username");
 
         assertEquals(token, response);
     }

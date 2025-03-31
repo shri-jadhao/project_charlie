@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import elearning.project.modelDTO.QuizDTO;
 import elearning.project.models.quizmodel.QuestionWrapper;
 import elearning.project.models.quizmodel.Quiz;
 import elearning.project.models.quizmodel.Response;
@@ -32,7 +33,7 @@ public class QuizController {
 	}
 //	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@GetMapping
-	public ResponseEntity<List<Quiz>> getAllQuiz(){
+	public ResponseEntity<List<QuizDTO>> getAllQuiz(){
 		return service.getAllQuiz();
 	}
 	@GetMapping("{id}")

@@ -1,5 +1,6 @@
 package elearning.project.controller;
 
+import elearning.project.modelDTO.SubmissionDTO;
 import elearning.project.models.Submission;
 import elearning.project.services.SubmissionService;
 
@@ -24,8 +25,8 @@ public class SubmissionController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<List<Submission>> getAllSubmissions() {
-		List<Submission> submissions = submissionService.getAllSubmissions();
+	public ResponseEntity<List<SubmissionDTO>> getAllSubmissions() {
+		List<SubmissionDTO> submissions = submissionService.getAllSubmissions();
 		return ResponseEntity.ok(submissions);
 	}
 

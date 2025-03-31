@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"assessment"})
 public class Assessment {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,6 @@ public class Assessment {
 	private int maxscore;
 	
 	@OneToMany(mappedBy="assessment",cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("assessment")
 	private List<Submission> submission;
 	
 	

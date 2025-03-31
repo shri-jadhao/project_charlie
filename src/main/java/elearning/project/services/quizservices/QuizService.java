@@ -3,6 +3,7 @@ package elearning.project.services.quizservices;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import elearning.project.exceptions.NotEnrolledException;
 import elearning.project.exceptions.QuizException;
 import elearning.project.exceptions.QuizIdNotFoundException;
-import elearning.project.models.Assessment;
+import elearning.project.modelDTO.QuizDTO;
 import elearning.project.models.Course;
 import elearning.project.models.Enrollment;
 import elearning.project.models.Submission;
@@ -59,8 +60,9 @@ public class QuizService {
 		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 
-	public ResponseEntity<List<Quiz>> getAllQuiz() {
-		return new ResponseEntity<>(quizrepo.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<QuizDTO>> getAllQuiz() {
+		List<QuizDTO> quizdto=quizrepo.findAll().stream().map(q->convertToDTO(q)).collect(Collectors.toList());
+		return new ResponseEntity<>(quizdto,HttpStatus.OK);
 	}
 
 	public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Long id) {
@@ -109,5 +111,13 @@ public class QuizService {
 			submission.createSubmission(s);
 			return new ResponseEntity<>(right, HttpStatus.OK);
 		}
+	}
+	public QuizDTO convertToDTO(Quiz quiz) {
+	    return new QuizDTO(
+	            quiz.getId(),
+	            quiz.getTitle(),
+	            quiz.getQuestions().stream().map(q->q.getId()).collect(Collectors.toList()), // Extract only question IDs
+	            quiz.getAssessment().getAssessmentID()  // Extract only Assessment ID
+	    );
 	}
 }

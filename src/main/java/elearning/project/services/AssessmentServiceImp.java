@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import elearning.project.controller.AssessmentController;
 import elearning.project.exceptions.ResourceIdNotFoundException;
 import elearning.project.exceptions.RoleBasedAccessControlException;
+import elearning.project.modelDTO.AssessmentDTO;
+import elearning.project.modelDTO.SubmissionDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +18,8 @@ import elearning.project.repositories.AssessmentRepo;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class AssessmentServiceImp implements AssessmentService {
@@ -25,15 +30,15 @@ public class AssessmentServiceImp implements AssessmentService {
     private AssessmentRepo assessmentRepository;
 
     @Override
-    public List<Assessment> getAllAssessments() {
+    public List<AssessmentDTO> getAllAssessments() {
         logger.info("Fetching all assessments");
-        return assessmentRepository.findAll();
+        return assessmentRepository.findAll().stream().map(assess->convertToDTO(assess)).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Assessment> getAssessmentById(Long id) {
+    public Optional<AssessmentDTO> getAssessmentById(Long id) {
         logger.info("Fetching assessment with ID: {}", id);
-        return assessmentRepository.findById(id);
+        return assessmentRepository.findById(id).map(assess-> convertToDTO(assess));
     }
 
     @Override
@@ -62,5 +67,20 @@ public class AssessmentServiceImp implements AssessmentService {
         updatedAssessment.setCourse(assessment.getCourse());
         // Update other fields as necessary
         return assessmentRepository.save(updatedAssessment);
+    }
+    public AssessmentDTO convertToDTO(Assessment assessment) {
+        // Convert Submission List -> SubmissionDTO List
+        List<SubmissionDTO> submissionDTOs = assessment.getSubmission().stream()
+                .map(sub -> new SubmissionDTO(sub.getSubmissionId(), sub.getScore(), sub.getStudent().getUserID(),sub.getAssessment().getAssessmentID()))
+                .collect(Collectors.toList());
+
+        // Convert Assessment -> AssessmentDTO
+        return new AssessmentDTO(
+                assessment.getAssessmentID(),
+                assessment.getCourse().getCourseID(),  // Extract only Course ID
+                assessment.getRole().name(),
+                assessment.getMaxscore(),
+                submissionDTOs
+        );
     }
 }

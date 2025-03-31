@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"enrollments","assessment"})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,6 @@ public class Course {
     User instructor; 
     
     @OneToMany(mappedBy="course")
-    @JsonIgnoreProperties(value="course")
     List<Enrollment> enrollments;
 
     // all operations on course will be cascaded to Video entity

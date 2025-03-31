@@ -28,29 +28,10 @@ public class UserServiceImp implements UserService {
 	@Autowired
 	private UserRepo userRepository;
 
-	@Autowired
-	private JWTService service;
-
-	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	@Autowired
-	private EmailServiceImpl emailserviceimpl;
+//	@Autowired    
+//	private EmailServiceImpl emailserviceimpl;   // Email Service
 
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-
-//	@Override
-//	public String authentication(User user) {
-//		logger.info("Authenticating user: {}", user.getUsername());
-//		Authentication a = authenticationManager
-//				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-//		if (a.isAuthenticated()) {
-//			logger.info("Authentication successful for user: {}", user.getUsername());
-//			return service.generateToken(user.getUsername());
-//		}
-//		logger.warn("Authentication failed for user: {}", user.getUsername());
-//		return "failure";
-//	}
 
 	@Override
 	public List<User> getAllUsers() {
@@ -74,7 +55,7 @@ public class UserServiceImp implements UserService {
 		logger.info("Creating user with username: {}", user.getUsername());
 		user.setPassword(encoder.encode(user.getPassword()));
 		User savedUser = userRepository.save(user);
-		emailserviceimpl.sendMailWithAttachment(savedUser);
+//		emailserviceimpl.sendMailWithAttachment(savedUser); --> email service
 		return savedUser;
 	}
 

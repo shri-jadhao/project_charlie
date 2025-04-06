@@ -12,4 +12,5 @@ public interface AssessmentService {
     Assessment saveAssessment(Assessment assessment);
     Assessment updateAssessment(Long id, Assessment assessment,int instructorid);
     void deleteAssessment(Long id);
+    List<AssessmentDTO> getAllAssessmentsByCourseId(Long cid);
 }

@@ -14,7 +14,6 @@ public class CourseDTO {
 	private Long courseID;
 	private String title;
 	private String description;
-	private String contentURL;
 	private Long instructorID;	
 	private List<Long> videoIDs;
 }

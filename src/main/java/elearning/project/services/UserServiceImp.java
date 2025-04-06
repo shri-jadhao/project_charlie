@@ -90,14 +90,10 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public User getusername(String username) {
-		logger.info("Fetching user by username: {}", username);
-		return userRepository.findUserByUsername(username);
-	}
-
-	@Override
 	public User findByUserName(String username) {
-		logger.info("Fetching user by username: {}", username);
+		if(userRepository.findUserByUsername(username)==null) {
+			throw new UserNotFoundException("User with "+ username + " doesn't exists");
+		}
 		return userRepository.findUserByUsername(username);
 	}
 }

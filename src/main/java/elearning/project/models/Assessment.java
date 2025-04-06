@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,15 +24,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"assessment"})
 public class Assessment {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long assessmentID;
-
+    
+	@NotEmpty(message="assessment name must not be empty!")
+	private String name;
+	
 	@ManyToOne
 	@JoinColumn(name="courseid")
-	@JsonIgnoreProperties("assessment")
 	Course course;
 	
 	private Type role;

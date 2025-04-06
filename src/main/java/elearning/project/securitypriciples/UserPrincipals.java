@@ -33,6 +33,10 @@ public class UserPrincipals implements UserDetails {
 		return user.getUsername();
 	}
 	
+	public User getUser() {
+		return user;
+	}
+	
 
 
 }

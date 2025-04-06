@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,15 +20,15 @@ public class UserController {
 
 	@Autowired
 	private UserService service;
-    @Autowired
-    JWTService jwtservice;
+
 	@PostMapping("")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		User createdUser = service.createUser(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 		// return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
 	}
-
+   
+//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("")
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> users = service.getAllUsers();
@@ -50,16 +51,10 @@ public class UserController {
 		service.deleteUser(id);
 		return ResponseEntity.noContent().build();
 	}
-//generates the JWT token through username
-	@GetMapping("/gettoken/{username}")
-	public String getToken(@PathVariable String username) {
-		System.out.println("In the token generation");
-		return jwtservice.generateToken(username);
-	}
-//	
+
 	@GetMapping("name/{username}")
 	public User getusername(@PathVariable String username) {
-		return service.getusername(username);
+		return service.findByUserName(username);
 	}
 
 }

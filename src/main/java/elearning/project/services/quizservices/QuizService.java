@@ -14,6 +14,7 @@ import elearning.project.exceptions.NotEnrolledException;
 import elearning.project.exceptions.QuizException;
 import elearning.project.exceptions.QuizIdNotFoundException;
 import elearning.project.modelDTO.QuizDTO;
+import elearning.project.modelDTO.ResultDTO;
 import elearning.project.models.Course;
 import elearning.project.models.Enrollment;
 import elearning.project.models.Submission;
@@ -26,6 +27,8 @@ import elearning.project.repositories.QuestionsRepo;
 import elearning.project.repositories.QuizRepo;
 import elearning.project.repositories.UserRepo;
 import elearning.project.services.SubmissionService;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Service
 public class QuizService {
@@ -80,7 +83,7 @@ public class QuizService {
 		return new ResponseEntity<>(wrapper, HttpStatus.OK);
 	}
 
-	public ResponseEntity<Double> getSubmit(Long id, List<Response> response, Long studentid) {
+	public ResponseEntity<ResultDTO> getSubmit(Long id, List<Response> response, Long studentid) {
 		Quiz quiz = quizrepo.findById(id).get();
 		Course course = assessRepo.findById(quiz.getAssessment().getAssessmentID()).get().getCourse();
 		List<Enrollment> enrolls = course.getEnrollments();
@@ -90,6 +93,7 @@ public class QuizService {
 				k = 1;
 			}
 		}
+		int length=response.size();
 		if (k == 0) {
 			throw new NotEnrolledException("User not enrolled in the course!");
 		} else {
@@ -109,7 +113,7 @@ public class QuizService {
 			}
 			s.setScore(right);
 			submission.createSubmission(s);
-			return new ResponseEntity<>(right, HttpStatus.OK);
+			return new ResponseEntity<>(new ResultDTO(right,((right/length)*100)), HttpStatus.OK);
 		}
 	}
 	public QuizDTO convertToDTO(Quiz quiz) {
@@ -119,5 +123,5 @@ public class QuizService {
 	            quiz.getQuestions().stream().map(q->q.getId()).collect(Collectors.toList()), // Extract only question IDs
 	            quiz.getAssessment().getAssessmentID()  // Extract only Assessment ID
 	    );
-	}
+	}	
 }

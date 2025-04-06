@@ -27,6 +27,7 @@ public class AssessmentController {
 		return assessmentService.getAllAssessments();
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<AssessmentDTO> getAssessmentById(@PathVariable Long id) {
 		Optional<AssessmentDTO> assessment = assessmentService.getAssessmentById(id);
@@ -37,7 +38,7 @@ public class AssessmentController {
 		}
 	}
 
-//	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@PostMapping
 	public Assessment createAssessment(@RequestBody Assessment assessment) {
 		return assessmentService.saveAssessment(assessment);
@@ -58,5 +59,11 @@ public class AssessmentController {
 	public ResponseEntity<Void> deleteAssessment(@PathVariable Long id) {
 		assessmentService.deleteAssessment(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/course/{id}")
+	public ResponseEntity<List<AssessmentDTO>> getAllAssessmentsByCourseId(@PathVariable Long id){
+		 List<AssessmentDTO>result =assessmentService.getAllAssessmentsByCourseId(id);
+		 return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 }

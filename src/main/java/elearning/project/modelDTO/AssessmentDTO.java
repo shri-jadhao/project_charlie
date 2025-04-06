@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AssessmentDTO {
        private Long assessmentId;
+       private String name;
        private Long courseId;
        private String role;
        private int maxScore;

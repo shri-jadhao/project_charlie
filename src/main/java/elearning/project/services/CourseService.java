@@ -2,6 +2,7 @@ package elearning.project.services;
 
 import elearning.project.models.Course;
 import elearning.project.exceptions.ResourceIdNotFoundException;
+import elearning.project.modelDTO.AssessmentDTO;
 import elearning.project.modelDTO.CourseDTO;
 
 import java.util.List;

@@ -18,12 +18,12 @@ import elearning.project.models.quizmodel.Quizquestions;
 import elearning.project.services.quizservices.QuestionService;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/questions")
 public class QuestionsController {
 	@Autowired
 	QuestionService service;
 	@GetMapping("")
-	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Quizquestions>> getAllquestions(){
 		 if(service.getAllquestions()!=null) {
 			 return new ResponseEntity<>(service.getAllquestions(),HttpStatus.OK);
@@ -32,7 +32,6 @@ public class QuestionsController {
 			 return new ResponseEntity<>(new ArrayList(),HttpStatus.BAD_REQUEST);
 		 }
 	}
-	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@PostMapping("")
 	public void uploadquestions(@RequestBody List<Quizquestions> question) {
 		for(Quizquestions q:question ) {

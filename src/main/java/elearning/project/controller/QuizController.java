@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import elearning.project.modelDTO.QuizDTO;
+import elearning.project.modelDTO.ResultDTO;
 import elearning.project.models.quizmodel.QuestionWrapper;
 import elearning.project.models.quizmodel.Quiz;
 import elearning.project.models.quizmodel.Response;
 import elearning.project.services.quizservices.QuizService;
+import lombok.Data;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -42,9 +44,11 @@ public class QuizController {
 		
 	}
 	@PostMapping("/submit/{id}")
-    public ResponseEntity<Double> getSubmit(@PathVariable Long id,@RequestBody List<Response> response,@RequestParam Long studentid){
+    public ResponseEntity<ResultDTO> getSubmit(@PathVariable Long id,@RequestBody List<Response> response,@RequestParam Long studentid){
 		return service.getSubmit(id,response,studentid);
 	}
+	
+
 
 }
 

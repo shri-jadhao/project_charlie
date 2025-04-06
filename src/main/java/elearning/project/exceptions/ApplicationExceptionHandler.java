@@ -84,4 +84,11 @@ public class ApplicationExceptionHandler {
 		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
 	}
 	
+
+	@ExceptionHandler(ExistsException.class)
+	public ResponseEntity<?> handlerExistsException(ExistsException ex, HttpServletRequest request) {
+		ApiException api = new ApiException(request.getRequestURI(), ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(api, HttpStatus.BAD_REQUEST);
+	}
+	
 }

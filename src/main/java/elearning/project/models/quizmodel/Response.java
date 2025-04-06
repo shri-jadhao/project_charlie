@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Response {
-	int id;
+	Long id;
 	String response;
 }

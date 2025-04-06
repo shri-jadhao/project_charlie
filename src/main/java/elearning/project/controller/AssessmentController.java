@@ -61,7 +61,7 @@ public class AssessmentController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping("/course/{id}")
+	@GetMapping("/{id}/course")
 	public ResponseEntity<List<AssessmentDTO>> getAllAssessmentsByCourseId(@PathVariable Long id){
 		 List<AssessmentDTO>result =assessmentService.getAllAssessmentsByCourseId(id);
 		 return new ResponseEntity<>(result,HttpStatus.OK);

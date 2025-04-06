@@ -28,10 +28,10 @@ public class QuizController {
 	@Autowired
 	QuizService service;
 	
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@PostMapping
-	public ResponseEntity<String> postTheQuestions(@RequestParam String catogery,@RequestParam int questions,@RequestParam String title,@RequestParam Long assessmentid){
-		System.out.println("Api called!");
-		return service.createQuiz(catogery,questions,title,assessmentid);
+	public ResponseEntity<List<QuestionWrapper>> postTheQuestions(@RequestBody QuizDTO quiz){
+		return service.createQuiz(quiz.getCategory(),quiz.getQuestions(),quiz.getTitle(),quiz.getAssessmentId());
 	}
 //	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@GetMapping
@@ -43,9 +43,9 @@ public class QuizController {
 		 return service.getQuizQuestions(id);
 		
 	}
-	@PostMapping("/submit/{id}")
-    public ResponseEntity<ResultDTO> getSubmit(@PathVariable Long id,@RequestBody List<Response> response,@RequestParam Long studentid){
-		return service.getSubmit(id,response,studentid);
+	@PostMapping("/{id}/submit")
+    public ResponseEntity<ResultDTO> getSubmit(@PathVariable Long id,@RequestBody List<Response> response){
+		return service.getSubmit(id,response);
 	}
 	
 

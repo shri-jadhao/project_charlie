@@ -37,19 +37,18 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
 	@OneToMany(mappedBy = "instructor")
 	@JsonIgnore
 	List<Course> course;
+	
 	@Email(message="Once Recheck the Email")
 	@NotEmpty(message="Email must not be empty")
 	private String email;
     
-	
 	@Size(min = 8,  message = "Password must be at least 8 characters long and contain at least one letter and one digit")
 	private String password;
 
 	public enum Role {
-		STUDENT, INSTRUCTOR
+		STUDENT, INSTRUCTOR,ADMIN
 	}
 }

@@ -1,5 +1,6 @@
 package elearning.project.services;
 
+import elearning.project.modelDTO.SubmissionDTO;
 import elearning.project.models.Submission;
 import elearning.project.repositories.SubmissionRepo;
 
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SubmissionServiceImpl implements SubmissionService {
@@ -26,27 +28,23 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
-    public List<Submission> getAllSubmissions() {
+    public List<SubmissionDTO> getAllSubmissions() {
         logger.info("Fetching all submissions");
-        return submissionRepository.findAll();
+        return submissionRepository.findAll().stream().map(sub->convertToDTO(sub)).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Submission> getSubmissionById(Long id) {
+    public Optional<SubmissionDTO> getSubmissionById(Long id) {
         logger.info("Fetching submission with ID: {}", id);
-        return submissionRepository.findById(id);
+        return submissionRepository.findById(id).map(sub->convertToDTO(sub));
     }
 
-    @Override
-    public void deleteSubmission(Long id) {
-        logger.info("Deleting submission with ID: {}", id);
-        submissionRepository.deleteById(id);
-    }
-
-    @Override
-    public Submission updateSubmission(Long id, Submission submissionDetails) {
-        logger.info("Updating submission with ID: {}", id);
-        // Implementation for updating the submission
-        return null;
+    public SubmissionDTO convertToDTO(Submission submission) {
+        return new SubmissionDTO(
+                submission.getSubmissionId(),
+                submission.getScore(),
+                submission.getStudent().getUserID(),  // Extract only Student ID
+                submission.getAssessment().getAssessmentID()  // Extract only Assessment ID
+        );
     }
 }

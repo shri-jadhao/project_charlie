@@ -10,7 +10,6 @@ public interface UserService {
     User createUser(User user);
     User updateUser(Long id, User userDetails);
     void deleteUser(Long id);
-	User getusername(String username);
-	public String authentication(User user);
+//	public String authentication(User user);
 	public User findByUserName(String username);
 }

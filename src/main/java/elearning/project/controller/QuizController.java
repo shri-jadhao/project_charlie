@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import elearning.project.modelDTO.QuizDTO;
 import elearning.project.modelDTO.ResultDTO;
 import elearning.project.models.quizmodel.QuestionWrapper;
-import elearning.project.models.quizmodel.Quiz;
 import elearning.project.models.quizmodel.Response;
 import elearning.project.services.quizservices.QuizService;
 import lombok.Data;

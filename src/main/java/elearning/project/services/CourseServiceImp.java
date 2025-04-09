@@ -12,7 +12,6 @@ import elearning.project.exceptions.CourseIdNotFoundException;
 import elearning.project.exceptions.ResourceIdNotFoundException;
 import elearning.project.exceptions.RoleBasedAccessControlException;
 import elearning.project.exceptions.UserAlreadyExists;
-import elearning.project.modelDTO.AssessmentDTO;
 import elearning.project.modelDTO.CourseDTO;
 import elearning.project.models.Course;
 import elearning.project.models.User;

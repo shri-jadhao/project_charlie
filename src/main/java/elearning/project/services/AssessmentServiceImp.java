@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import elearning.project.controller.AssessmentController;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import elearning.project.exceptions.ExistsException;
 import elearning.project.exceptions.ResourceIdNotFoundException;
 import elearning.project.exceptions.RoleBasedAccessControlException;
 import elearning.project.modelDTO.AssessmentDTO;
 import elearning.project.modelDTO.CourseDTO;
 import elearning.project.modelDTO.SubmissionDTO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import elearning.project.models.Assessment;
 import elearning.project.repositories.AssessmentRepo;
 import elearning.project.securitypriciples.UserPrincipals;

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import elearning.project.models.User;
 
 
+
 //Generally this class is used to check if the details given in the login form mathces the actual values in the DB
 public class UserPrincipals implements UserDetails {
     private User user;
@@ -29,10 +30,13 @@ public class UserPrincipals implements UserDetails {
     //gets the username from the spring security form
 	@Override
 	public String getUsername() {
-		System.out.println(user.getUsername());
+//		System.out.println(user.getUsername());
 		return user.getUsername();
 	}
-	
+	public String getUserEmail() {
+		System.out.println("email is "+user.getEmail());
+		return user.getEmail();
+	}
 	public User getUser() {
 		return user;
 	}

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import elearning.project.repositories.UserRepo;
+import elearning.project.securitypriciples.UserPrincipals;
 import elearning.project.services.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -47,11 +48,11 @@ public class JWTService {
 
 	private Map<String, Object> claims = new HashMap<>();
 	// Generate a JWT token for the given username
-	public String generateToken(String username) {
-		if(userRepo.findUserByUsername(username)==null) {
-			throw new UsernameNotFoundException(username+" is not in DB to generate token!");
+	public String generateToken(String email) {
+		if(userRepo.findUserByEmail(email)==null) {
+			throw new UsernameNotFoundException(email+" is not in DB to generate token!");
 		}
-		return Jwts.builder().claims().add(claims).subject(username).issuedAt(new Date(System.currentTimeMillis()))
+		return Jwts.builder().claims().add(claims).subject(email).issuedAt(new Date(System.currentTimeMillis()))
 		.expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000 )).and().signWith(getKey()).compact();
 				//.expiration(new Date(new Date().getTime()+ 24 * 60 * 60 * 1000 )).and().signWith(getKey()).compact();
 	}
@@ -80,9 +81,10 @@ public class JWTService {
 	}
 
 //  Validate the JWT token
-	public boolean validateToken(String token, UserDetails userDetails) {
+	public boolean validateToken(String token, UserPrincipals userDetails) {
 		final String userName = extractUserName(token);
-		return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		System.out.println("inside the validate token"+userDetails.getUserEmail()+userName);
+		return (userName.equals(userDetails.getUserEmail()) && !isTokenExpired(token));
 	}
 
 //  Check if the JWT token is expired

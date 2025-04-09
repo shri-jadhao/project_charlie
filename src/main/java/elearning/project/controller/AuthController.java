@@ -36,9 +36,9 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
-            String token = jwtService.generateToken(loginRequest.getUsername());
+            String token = jwtService.generateToken(loginRequest.getEmail());
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Invalid username or password");
@@ -47,7 +47,7 @@ public class AuthController {
     //Static DTO's or its a static nested class which is only used by the authcontroller
     @Data
     static class LoginRequest {
-        private String username;
+        private String email;
         private String password;
     }
 

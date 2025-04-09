@@ -15,7 +15,6 @@ import elearning.project.exceptions.NotEnrolledException;
 import elearning.project.exceptions.QuizException;
 import elearning.project.exceptions.QuizIdNotFoundException;
 import elearning.project.exceptions.ResourceIdNotFoundException;
-import elearning.project.modelDTO.CourseDTO;
 import elearning.project.modelDTO.QuizDTO;
 import elearning.project.modelDTO.ResultDTO;
 import elearning.project.models.Course;
